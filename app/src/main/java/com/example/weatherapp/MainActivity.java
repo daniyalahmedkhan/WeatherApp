@@ -20,7 +20,9 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     ImageView search;
-    TextView tempText , descText , humidityText;
+    TextView tempText,
+            descText,
+            humidityText;
     EditText textField;
 
     @Override
@@ -46,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getWeatherData(String name){
+    private void getWeatherData(String name) {
 
-       ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<Example> call = apiInterface.getWeatherData(name);
 
@@ -56,9 +58,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
 
-                tempText.setText("Temp"+" "+response.body().getMain().getTemp()+" C");
-                descText.setText("Feels Like"+" "+response.body().getMain().getFeels_like());
-                humidityText.setText("Humidity"+" "+response.body().getMain().getHumidity());
+                try {
+                    tempText.setText("Temp" + " " + response.body().getMain().getTemp() + " C");
+                    descText.setText("Feels Like" + " " + response.body().getMain().getFeels_like());
+                    humidityText.setText("Humidity" + " " + response.body().getMain().getHumidity());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
@@ -69,5 +75,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
